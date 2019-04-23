@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="copyright">
+        <title>Snap</title>
+        <script src="../../dist/snap.svg-min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+
+        <style type="text/css">
+            #letterh {
+                animation: lala 2s;
+                animation-iteration-count: 1;
+            }
+            @-webkit-keyframes lala {
+              from {
+                -webkit-transform: scale3d(12, 1, 1);
+                transform: scale3d(10, 1, 1);
+                }  
+                50% {
+                -webkit-transform: scale3d(10.05, 1.05, 100.05);
+                transform: scale3d(1.05, 1.05, 1.05);
+              }
+              to {
+                -webkit-transform: scale3d(1, 1, 1);
+                transform: scale3d(1, 1, 1);
+              }
+            }
+
+            #lettere {
+                animation: pulse 3s;
+                transform: 3s;
+                animation-iteration-count: infinite;
+            }
+
+            @keyframes pulse {
+              from {
+                -webkit-transform: scale3d(2, 1, 1);
+                transform: scale3d(1, 1, 1);
+            }
+                50% {
+                -webkit-transform: scale3d(10.05, 1.05, 100.05);
+                transform: scale3d(1.05, 1.05, 1.05);
+              }
+              to {
+                -webkit-transform: scale3d(2, 1, 1);
+                transform: scale3d(1, 1, 1);
+              }
+            }
+
+            #letterp {
+                animation: eye 3s;
+                transform: 3s;
+                animation-iteration-count: infinite;
+            }
+            .highlight {
+              border: 4px solid yellow;
+              width: 196px;
+              height: 76px;
+              line-height: 76px;
+            }
+
+        </style>
+        <script>
+        window.onload = function () {
+            var s = Snap("#snapcontainer");
+            var h = s.select('#letterh');
+            var o = s.select('#lettero');
+            var p = s.select('#letterp');
+            var e = s.select('#lettere');
+            var bbox = h.getBBox();
+
+            $('#button1').on("click", function() {
+                $('#letterh').css({ fill: "orange"});
+                $('#lettero').css({ fill: "orange"});
+                $('#letterp').css({ fill: "orange"});
+                $('#lettere').css({ fill: "orange"});
+            })
+
+            //plugin for skew
+            Snap.plugin( function( Snap, Element, Paper, global ) {
+
+                    Element.prototype.skew = function( angleX, angleY ) {
+
+                        var bbox = this.getBBox();
+
+                        var m = new Snap.Matrix( 1, Snap.rad(angleY), Snap.rad(angleX), 1, 0, 0);
+
+                        var dx = m.x( bbox.cx, bbox.cy ) - bbox.cx;
+                        var dy = m.y( bbox.cx, bbox.cy ) - bbox.cy;
+
+                        m.translate( -dx, -dy )
+                        this.transform( m );
+                    };
+                });
+
+            var s = Snap("#svg");
+            
+            o.skew(10,0)
+            e.skew(20,10)
+            
+
+            p.animate().move(200, 200)
+
+            p.mouseover(function() { this.pause() })
+            p.mouseout(function() { this.play() })
+
+        }
+            
+        </script>
+    </head>
+    <body style="margin:100px auto auto 500px">
+        <div id="snapcontainer">
+            <svg version="1.1" class="icon" style="fill:black;" id="letterh" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="312px" height="300px" viewBox="0 0 260 250" enable-background="new 0 0 260 250" xml:space="preserve">
+                <path d="M547.85,167,547,216.44l24.91.42.86-49.46,28.63.49-2.24,130.17-28.63-.49.86-50.21-24.92-.43-.86,50.21L517,296.65l2.24-130.17Z" transform="translate(-516.97 -166.48)"/>
+            </svg>
+           <svg version="1.1" class="icon" style="fill:black;" id="lettero" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="312px" height="300px" viewBox="0 0 260 250" enable-background="new 0 0 260 250" xml:space="preserve">
+                <path d="M710.44,417.74c-35.7,29.22-61.23,32.08-80,9.2s-10.86-47.34,24.83-76.56,61.23-32.08,80-9.19S746.13,388.53,710.44,417.74Zm-18.38-22.45c22.6-18.49,29-28.3,22.05-36.79s-17.83-4.16-40.42,14.34-29,28.29-22.05,36.78S669.46,413.78,692.06,395.29Z" transform="translate(-620.64 -325.99)"/>
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="360 8.4 9.5" to="0 8.4 9.5" dur="1.5s" additive="sum" repeatCount="indefinite" />
+                
+            </svg>
+            <svg version="1.1"class="icon" style="fill:black;" id="letterp" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="312px" height="300px" viewBox="0 0 560 250" enable-background="new 0 0 260 250" xml:space="preserve">
+                <path d="M709.14,332.54c21.94,9.23,30.88,31.15,20.2,56.52s-32.59,34.31-54.54,25.08l-7.71-3.25-16.16,38.4-26.4-11.11,50.49-120Zm-24.59,56c7.2,3,13.79-.66,18.05-10.77s2.28-17.4-4.92-20.43l-6.86-2.89-13.13,31.2Z" transform="translate(-524.53 -318.18)" />
+                <animateTransform attributeType="xml" attributeName="transform" type="rotate" from="360 8.4 9.5" to="0 1.4 5.5" dur="4.5s" additive="sum" repeatCount="indefinite" /> 
+            </svg>
+            <svg version="1.1"class="icon" style="fill:black;" id="lettere" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="312px" height="300px" viewBox="0 0 260 250" enable-background="new 0 0 260 250" xml:space="preserve">
+                <path d="M662.91,352.67l10.18,22.54L698,364l11,24.41-24.92,11.26,9.27,20.5,34.91-15.77,11.56,25.59-61,27.57-53.6-118.64,62-28,11.56,25.59Z" transform="translate(-625.25 -310.84)"/>
+            </svg>
+
+            <button id="button1" style="height:50px; width: 200px; border-radius: 4px; background-color: orange; position: absolute; top: 0; left: 0; float:left">SUBMIT</button>
+        </div>
+    </body>
+</html>

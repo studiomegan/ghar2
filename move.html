@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="copyright">
+        <title>Snap</title>
+        <script src="../../dist/snap.svg-min.js"></script>
+        <script>
+        window.onload = function () {
+          // Init
+          var container = document.getElementById("snapcontainer"),
+              inner = document.getElementById("inner");
+
+          // Mouse
+          var mouse = {
+            _x: 0,
+            _y: 0,
+            x: 0,
+            y: 0,
+            updatePosition: function(event) {
+              var e = event || window.event;
+              this.x = e.clientX - this._x;
+              this.y = (e.clientY - this._y) * -1;
+            },
+            setOrigin: function(e) {
+              this._x = e.offsetLeft + Math.floor(e.offsetWidth / 2);
+              this._y = e.offsetTop + Math.floor(e.offsetHeight / 2);
+            },
+            show: function() {
+              return "(" + this.x + ", " + this.y + ")";
+            }
+          };
+
+          // Track the mouse position relative to the center of the container.
+          mouse.setOrigin(container);
+
+          //-----------------------------------------
+
+          var counter = 0;
+          var updateRate = 10;
+          var isTimeToUpdate = function() {
+            return counter++ % updateRate === 0;
+          };
+
+          //-----------------------------------------
+
+          var onMouseEnterHandler = function(event) {
+            update(event);
+          };
+
+          var onMouseLeaveHandler = function() {
+            inner.style = "";
+          };
+
+          var onMouseMoveHandler = function(event) {
+            if (isTimeToUpdate()) {
+              update(event);
+            }
+          };
+
+          //-----------------------------------------
+
+          var update = function(event) {
+            mouse.updatePosition(event);
+            updateTransformStyle(
+              (mouse.y / inner.offsetHeight / 2).toFixed(2),
+              (mouse.x / inner.offsetWidth / 2).toFixed(2)
+            );
+          };
+
+          var updateTransformStyle = function(x, y) {
+            var style = "rotateX(" + x + "deg) rotateY(" + y + "deg)";
+            inner.style.transform = style;
+            inner.style.webkitTransform = style;
+            inner.style.mozTransform = style;
+            inner.style.msTransform = style;
+            inner.style.oTransform = style;
+          };
+
+          //-----------------------------------------
+
+          container.onmouseenter = onMouseEnterHandler;
+          container.onmouseleave = onMouseLeaveHandler;
+          container.onmousemove = onMouseMoveHandler;
+        };
+
+            
+
+            
+        </script>
+    </head>
+    <body style="margin:100px auto auto 500px">
+        <div id="snapcontainer" style="perspective: 25px;">
+            <div id="inner" style="transition: transform 0.5s; -webkit-transition: transform 0.5s; -moz-transition: transform 0.5s; -o-transition: transform 0.5s;">
+                <svg onclick="changecolor()" id="letterh" version="1.1" style="fill:green;" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="712px" height="700px" viewBox="0 0 260 250" enable-background="new 0 0 260 250" xml:space="preserve">
+                    <path d="M547.85,167,547,216.44l24.91.42.86-49.46,28.63.49-2.24,130.17-28.63-.49.86-50.21-24.92-.43-.86,50.21L517,296.65l2.24-130.17Z" transform="translate(-516.97 -166.48)"/>
+                </svg>
+            </div>
+        </div>
+    </body>
+</html>
